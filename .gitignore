@@ -1,0 +1,10 @@
+*.sln
+*.suo
+*.stproj
+pkg
+_darcs
+dist
+*.manifest
+*.context
+.setup-confi
+.installed-pkg-config
