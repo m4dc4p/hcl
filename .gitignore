@@ -6,5 +6,5 @@ _darcs
 dist
 *.manifest
 *.context
-.setup-confi
+.setup-config
 .installed-pkg-config
