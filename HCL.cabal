@@ -1,11 +1,11 @@
 Name:           HCL
-Version:        1.3
+Version:        1.4
 License:        BSD3
 Author:         Justin Bailey
-Homepage:       
+Homepage:       http://github.com/m4dc4p/hcl/tree/master
 Maintainer:     jgbailey _ gmail _ com
 Category:       User Interfaces
-Build-Depends:  base, QuickCheck, mtl, random, containers
+Build-Depends:  base, QuickCheck < 2, mtl, random, containers
 Build-type: Simple
 Synopsis:       High-level library for building command line interfaces.
 Description:
