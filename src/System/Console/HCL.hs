@@ -326,6 +326,13 @@ runRequest :: Request a  -- ^ The request to evaluate.
               -> IO (Maybe a) -- ^ Result of the request.
 runRequest (Request r) = r
 
+instance Functor Request where
+  fmap = reqLift
+
+instance Applicative Request where
+  pure = makeReq
+  f <*> x = f `andMaybe` \f' ->
+    fmap f' x
 
 {- |
 Request behavior as a @Monad@ covers failure - when
@@ -333,7 +340,6 @@ a request results in @Nothing@, all bind
 operations fail afterwards. Thus, when one request fails,
 all subsequent requests automatically fail. -}
 instance Monad Request where
-  return x = makeReq x
   f >>= g = f `andMaybe` g
 
 {- |
@@ -803,7 +809,6 @@ instance (Arbitrary a) => Arbitrary (RandomRequest a) where
       do
         val <- arbitrary
         return (RandomRequest $ random val)
-  coarbitrary = undefined
   
 {- |
 Creates a request which will return a random value or Nothing. The
@@ -816,20 +821,6 @@ instance (Arbitrary a) => Arbitrary (Request a) where
       if rnd
         then return $ Request (return (Just val))
         else return $ Request (return Nothing)
-  coarbitrary = undefined
-
--- | QuickCheck does not define arbitrary for Chars for some reason ...
-instance Arbitrary Char where
-  arbitrary =
-      choose'
-    where
-      choose' = 
-        do
-          val <- choose (minBound, maxBound)
-          if isPrint val
-            then return val
-            else choose'
-  coarbitrary = undefined
 
 -- | Show for random requests.  
 instance (Show a) => Show (RandomRequest a) where

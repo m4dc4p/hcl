@@ -7,7 +7,7 @@ Maintainer:     jgbailey _ gmail _ com
 Category:       User Interfaces
 License-File:   LICENSE
 License:        BSD3
-Build-Depends:  base, QuickCheck < 2, mtl, random, containers
+Build-Depends:  base, QuickCheck == 2.*, mtl, random, containers
 Build-type: Simple
 Synopsis:       High-level library for building command line interfaces.
 Description:
