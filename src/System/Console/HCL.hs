@@ -347,6 +347,7 @@ operations fail afterwards. Thus, when one request fails,
 all subsequent requests automatically fail. -}
 instance Monad Request where
   f >>= g = f `andMaybe` g
+  fail _ = reqFail
 
 {- |
 Takes a value and makes it into a request. Should
