@@ -326,9 +326,15 @@ runRequest :: Request a  -- ^ The request to evaluate.
               -> IO (Maybe a) -- ^ Result of the request.
 runRequest (Request r) = r
 
+{- |
+Because we have defined @Request@ as @Applicative@,
+we must also define it as @Functor@. -}
 instance Functor Request where
   fmap = reqLift
 
+{- |
+Because we have defined @Request@ as @Monad@,
+we must also define it as @Applicative@. -}
 instance Applicative Request where
   pure = makeReq
   f <*> x = f `andMaybe` \f' ->
