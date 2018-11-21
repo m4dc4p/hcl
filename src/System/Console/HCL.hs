@@ -335,6 +335,7 @@ all subsequent requests automatically fail. -}
 instance Monad Request where
   return x = makeReq x
   f >>= g = f `andMaybe` g
+  fail _ = reqFail
 
 {- |
 Takes a value and makes it into a request. Should
