@@ -281,7 +281,7 @@ module System.Console.HCL
   Request,
   runRequest, execReq, reqIO, makeReq,
 -- * Request building blocks
-  reqResp, reqInteger, reqInt, reqRead,
+  reqResp, reqInteger, reqInt, reqRead, reqChar,
 -- * Functions lifted into Requests
   andReq, orReq, notReq, reqIf, reqConst, reqLift, reqLift2,
   reqMaybe,
@@ -296,11 +296,12 @@ module System.Console.HCL
 ) where
  
 import Data.Char (isSpace, toLower, isPrint)
-import System.IO (hFlush, stdout)
+import System.IO
 import Test.QuickCheck 
 import System.IO.Unsafe (unsafePerformIO)
 import System.Random
 import Data.Maybe (isNothing, isJust)
+import Control.Monad (when)
 import Control.Monad.Trans 
 
 {- |
@@ -430,6 +431,18 @@ reqRead req =
         ((v, _):[]) -> return $ Just v
         _           -> return Nothing
 
+{- |
+@reqChar@ requests a single character. Unlike other @Request@s, it
+does not wait for the user to hit enter; it simply returns the first
+keystroke. -}
+reqChar :: Request Char
+reqChar = Request $ do
+  mode <- hGetBuffering stdin
+  hSetBuffering stdin NoBuffering
+  val <- getChar
+  when (val /= '\n') $ putStrLn ""
+  hSetBuffering stdin mode
+  return $ Just val
 
 {- |
 @&&@ operator for requests (with failure). Behaves similarly, including
