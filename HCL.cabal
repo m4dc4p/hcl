@@ -1,5 +1,5 @@
 Name:           HCL
-Version:        1.5
+Version:        1.5.1
 License:        BSD3
 Author:         Justin Bailey
 Homepage:       http://github.com/m4dc4p/hcl/tree/master
@@ -23,6 +23,6 @@ Library
   Hs-Source-Dirs: src
 
 Executable hangman
-  Build-Depends:  HCL
+  Build-Depends:  base >= 4.7 && < 5, QuickCheck == 2.*, mtl, random, containers
   Main-Is:        Hangman.hs
   Hs-Source-Dirs: hangman, src
