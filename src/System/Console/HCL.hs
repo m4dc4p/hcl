@@ -4,7 +4,7 @@ This module provides a set of functions for building simple command-line interfa
 
 /Requests/
 
-The central concept of the library is the 'Request' type, which embodies an interactive request for data. When requesting data, there is always the possibility of failure. That is, the user may enter a value that doesn't parse, or may want to quit the process. For this reason, the value stored by a request is @"IO" ("Maybe a")@, which shows there may not always be a value available. 'Request' is a monad, and when a request fails, no subsequent requests are asked. Instead, the whole request chain is abandoned.
+The central concept of the library is the 'Request' type, which embodies an interactive request for data. When requesting data, there is always the possibility of failure. That is, the user may enter a value that doesn't parse, or may want to quit the process. For this reason, the value stored by a request is @"IO" ("Maybe" a)@, which shows there may not always be a value available. 'Request' is a monad, and when a request fails, no subsequent requests are asked. Instead, the whole request chain is abandoned.
 
 The function 'reqResp' gives the most basic request possible, which is for a string. From this, other requests can be built. The library provides several:
 
@@ -14,7 +14,7 @@ The function 'reqResp' gives the most basic request possible, which is for a str
 
  * 'reqChar' - Requests a single character (without waiting for the user to press enter)
 
- * 'reqPassword' - Like "reqResp", but doesn't echo the user's input to the console.
+ * 'reqPassword' - Like 'reqResp', but doesn't echo the user's input to the console.
 
  * 'reqRead' - Requests "Read"-able values.
 
@@ -628,7 +628,8 @@ reqDefault req def =
       Nothing -> return $ Just def
       v -> return v
 
--- Ask a request forever -- until failure. 
+{- |
+Ask a request forever -- until failure. -}
 reqForever :: Request a -- ^ Request to ask forever.
               -> Request a -- ^ Result.
 reqForever req =
@@ -727,10 +728,10 @@ reqCont req cont =
       Left _ -> cont
       Right val -> return val
 
-{-
-Indicates if the request failed or succceeded. If @Left ()@ is
-returned, the request failed. If @Right v@ is returned, the request
-produce a value. Though the value returned is itself a request, it
+{- |
+Indicates if the request failed or succceeded. If @"Left" ()@ is
+returned, the request failed. If @"Right" v@ is returned, the request
+produced a value. Though the value returned is itself a request, it
 will always be valid. -}
 reqWhich :: Request a -- ^ Request to evaluate.
             -> Request (Either () a) -- ^ Result.
@@ -802,7 +803,8 @@ prompt1 msg req def =
   in
     prompt msgWithDefault (reqDefault req def)
 
--- ^ Deprecated name for prompt1.
+{- |
+Deprecated name for 'prompt1'. -}
 promptWithDefault :: (Show a) => String -> Request a -> a -> Request a 
 promptWithDefault = prompt1
 
