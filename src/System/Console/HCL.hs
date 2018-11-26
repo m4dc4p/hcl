@@ -728,10 +728,10 @@ reqCont req cont =
       Left _ -> cont
       Right val -> return val
 
-{-
-Indicates if the request failed or succceeded. If @Left ()@ is
-returned, the request failed. If @Right v@ is returned, the request
-produce a value. Though the value returned is itself a request, it
+{- |
+Indicates if the request failed or succceeded. If @"Left" ()@ is
+returned, the request failed. If @"Right" v@ is returned, the request
+produced a value. Though the value returned is itself a request, it
 will always be valid. -}
 reqWhich :: Request a -- ^ Request to evaluate.
             -> Request (Either () a) -- ^ Result.
