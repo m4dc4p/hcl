@@ -6,7 +6,6 @@ Homepage:       http://github.com/m4dc4p/hcl/tree/master
 Maintainer:     Jonathan Lamothe <jlamothe1980@gmail.com>
 Category:       User Interfaces
 License-File:   LICENSE
-Build-Depends:  base, QuickCheck == 2.*, mtl, random, containers
 Build-type: Simple
 Synopsis:       High-level library for building command line interfaces.
 Description:
@@ -15,10 +14,15 @@ Description:
   Dates, or other structured values), build lists of values, and use simple
   menus. It is not intended to build complex interfaces with full cursor
   control. It is oriented towards line-based interfaces.
-Exposed-modules: System.Console.HCL
-Hs-Source-Dirs: src
+cabal-version: >= 1.6
 Data-files: hangman/2of12.txt
 
-Executable:     hangman
-Main-Is:        Hangman.hs
-Hs-Source-Dirs: hangman, src
+Library
+  Build-Depends:  base >= 4.7 && < 5, QuickCheck == 2.*, mtl, random, containers
+  Exposed-modules: System.Console.HCL
+  Hs-Source-Dirs: src
+
+Executable hangman
+  Build-Depends:  HCL
+  Main-Is:        Hangman.hs
+  Hs-Source-Dirs: hangman, src
