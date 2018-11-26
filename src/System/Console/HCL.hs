@@ -803,7 +803,8 @@ prompt1 msg req def =
   in
     prompt msgWithDefault (reqDefault req def)
 
--- ^ Deprecated name for prompt1.
+{- |
+Deprecated name for 'prompt1'. -}
 promptWithDefault :: (Show a) => String -> Request a -> a -> Request a 
 promptWithDefault = prompt1
 
