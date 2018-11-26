@@ -12,6 +12,10 @@ The function 'reqResp' gives the most basic request possible, which is for a str
 
  * 'reqInteger' - Requests "Integer" values.
 
+ * 'reqChar' - Requests a single character (without waiting for the user to press enter)
+
+ * 'reqPassword' - Like "reqResp", but doesn't echo the user's input to the console.
+
  * 'reqRead' - Requests "Read"-able values.
 
  * 'reqList' - Asks a request repeatedly and builds a list of the responses, which are returned when the user
@@ -281,7 +285,7 @@ module System.Console.HCL
   Request,
   runRequest, execReq, reqIO, makeReq,
 -- * Request building blocks
-  reqResp, reqInteger, reqInt, reqRead, reqChar,
+  reqResp, reqInteger, reqInt, reqRead, reqChar, reqPassword,
 -- * Functions lifted into Requests
   andReq, orReq, notReq, reqIf, reqConst, reqLift, reqLift2,
   reqMaybe,
@@ -443,6 +447,17 @@ reqChar = Request $ do
   when (val /= '\n') $ putStrLn ""
   hSetBuffering stdin mode
   return $ Just val
+
+{- |
+@reqPassword@ works like 'reqResp' except that it does not echo the user's input to standard output. -}
+reqPassword :: Request String
+reqPassword = Request $ do
+  echo <- hGetEcho stdin
+  hSetEcho stdin False
+  val <- runRequest reqResp
+  putStrLn ""
+  hSetEcho stdin echo
+  return val
 
 {- |
 @&&@ operator for requests (with failure). Behaves similarly, including
