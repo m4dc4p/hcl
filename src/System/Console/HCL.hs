@@ -628,7 +628,8 @@ reqDefault req def =
       Nothing -> return $ Just def
       v -> return v
 
--- Ask a request forever -- until failure. 
+{- |
+Ask a request forever -- until failure. -}
 reqForever :: Request a -- ^ Request to ask forever.
               -> Request a -- ^ Result.
 reqForever req =
