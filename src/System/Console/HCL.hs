@@ -4,7 +4,7 @@ This module provides a set of functions for building simple command-line interfa
 
 /Requests/
 
-The central concept of the library is the 'Request' type, which embodies an interactive request for data. When requesting data, there is always the possibility of failure. That is, the user may enter a value that doesn't parse, or may want to quit the process. For this reason, the value stored by a request is @"IO" ("Maybe a")@, which shows there may not always be a value available. 'Request' is a monad, and when a request fails, no subsequent requests are asked. Instead, the whole request chain is abandoned.
+The central concept of the library is the 'Request' type, which embodies an interactive request for data. When requesting data, there is always the possibility of failure. That is, the user may enter a value that doesn't parse, or may want to quit the process. For this reason, the value stored by a request is @"IO" ("Maybe" a)@, which shows there may not always be a value available. 'Request' is a monad, and when a request fails, no subsequent requests are asked. Instead, the whole request chain is abandoned.
 
 The function 'reqResp' gives the most basic request possible, which is for a string. From this, other requests can be built. The library provides several:
 
@@ -14,7 +14,7 @@ The function 'reqResp' gives the most basic request possible, which is for a str
 
  * 'reqChar' - Requests a single character (without waiting for the user to press enter)
 
- * 'reqPassword' - Like "reqResp", but doesn't echo the user's input to the console.
+ * 'reqPassword' - Like 'reqResp', but doesn't echo the user's input to the console.
 
  * 'reqRead' - Requests "Read"-able values.
 
