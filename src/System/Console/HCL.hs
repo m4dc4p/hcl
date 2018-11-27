@@ -305,7 +305,8 @@ import Test.QuickCheck
 import System.IO.Unsafe (unsafePerformIO)
 import System.Random
 import Data.Maybe (isNothing, isJust)
-import Control.Monad (when)
+import Control.Applicative (Alternative (..))
+import Control.Monad (when, MonadPlus)
 import Control.Monad.Trans 
 
 {- |
@@ -332,27 +333,43 @@ runRequest :: Request a  -- ^ The request to evaluate.
 runRequest (Request r) = r
 
 {- |
-Because we have defined @Request@ as @Applicative@,
-we must also define it as @Functor@. -}
+Because we have defined @'Request'@ as @"Applicative"@,
+we must also define it as @"Functor"@. -}
 instance Functor Request where
   fmap = reqLift
 
 {- |
-Because we have defined @Request@ as @Monad@,
-we must also define it as @Applicative@. -}
+Because we have defined @'Request'@ as @"Monad"@,
+we must also define it as @"Applicative"@. -}
 instance Applicative Request where
   pure = makeReq
   f <*> x = f `andMaybe` \f' ->
     fmap f' x
 
 {- |
-Request behavior as a @Monad@ covers failure - when
+'Request' behavior as a @"Monad"@ covers failure - when
 a request results in @Nothing@, all bind
 operations fail afterwards. Thus, when one request fails,
 all subsequent requests automatically fail. -}
 instance Monad Request where
   f >>= g = f `andMaybe` g
   fail _ = reqFail
+
+{- |
+Because we have defined @'Request'@ as @"MonadPlus"@, we must also
+define it as @"Alternative"@. -}
+instance Alternative Request where
+  empty = reqFail
+  x <|> y = Request $ do
+    maybeVal <- runRequest x
+    case maybeVal of
+      Nothing  -> runRequest y
+      Just val -> return $ Just val
+
+{- |
+'Request' behaviour as a @"MonadPlus"@ allows for successive fallback
+requests to be used on failure. -}
+instance MonadPlus Request
 
 {- |
 Takes a value and makes it into a request. Should
