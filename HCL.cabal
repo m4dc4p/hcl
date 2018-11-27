@@ -14,7 +14,7 @@ Description:
   Dates, or other structured values), build lists of values, and use simple
   menus. It is not intended to build complex interfaces with full cursor
   control. It is oriented towards line-based interfaces.
-cabal-version: >= 1.6
+cabal-version: >= 1.8
 Data-files: hangman/2of12.txt
 
 Library
@@ -23,6 +23,7 @@ Library
   Hs-Source-Dirs: src
 
 Executable hangman
-  Build-Depends:  base >= 4.7 && < 5, QuickCheck == 2.*, mtl, random, containers
+  Build-Depends:  base >= 4.7 && < 5, QuickCheck == 2.*, mtl, random, containers, HCL
   Main-Is:        Hangman.hs
-  Hs-Source-Dirs: hangman, src
+  Hs-Source-Dirs: hangman
+  other-modules:  Paths_HCL

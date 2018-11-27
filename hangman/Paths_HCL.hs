@@ -1,12 +1,12 @@
 module Paths_HCL (
-	version,
-	getBinDir, getLibDir, getDataDir, getLibexecDir,
-	getDataFileName
-	) where
+  version,
+  getBinDir, getLibDir, getDataDir, getLibexecDir,
+  getDataFileName
+  ) where
 
 import Data.Version
 
-version = Version {versionBranch = [1,0], versionTags = []}
+version = makeVersion [1,0]
 
 bindir     = "C:\\Program Files\\Haskell\\bin"
 libdir     = "C:\\Program Files\\Haskell\\HCL-1.0\\ghc-6.6"
