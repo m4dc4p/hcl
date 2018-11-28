@@ -9,6 +9,7 @@ import qualified Spec.Constructors as Constructors
 import qualified Spec.NotReq as NotReq
 import qualified Spec.OrReq as OrReq
 import qualified Spec.ReqIf as ReqIf
+import qualified Spec.ReqLift as ReqLift
 
 main = do
   counts <- runTestTT tests
@@ -21,4 +22,5 @@ tests = TestList
   , OrReq.tests
   , NotReq.tests
   , ReqIf.tests
+  , ReqLift.tests
   ]

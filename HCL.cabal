@@ -41,3 +41,4 @@ test-suite HCL-test
     Spec.NotReq
     Spec.OrReq
     Spec.ReqIf
+    Spec.ReqLift
