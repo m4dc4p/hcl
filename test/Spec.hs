@@ -5,10 +5,11 @@ import System.Exit
 import Test.HUnit
 
 import qualified Spec.AndReq as AndReq
+import qualified Spec.Constructors as Constructors
 
 main = do
   counts <- runTestTT tests
   when (failures counts > 0 || errors counts > 0)
     exitFailure
 
-tests = TestList [AndReq.tests]
+tests = TestList [Constructors.tests, AndReq.tests]
