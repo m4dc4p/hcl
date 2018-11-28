@@ -40,3 +40,4 @@ test-suite HCL-test
     Spec.Common
     Spec.NotReq
     Spec.OrReq
+    Spec.ReqIf
