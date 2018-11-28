@@ -6,6 +6,7 @@ import Test.HUnit
 
 import qualified Spec.AndReq as AndReq
 import qualified Spec.Constructors as Constructors
+import qualified Spec.NotReq as NotReq
 import qualified Spec.OrReq as OrReq
 
 main = do
@@ -17,4 +18,5 @@ tests = TestList
   [ Constructors.tests
   , AndReq.tests
   , OrReq.tests
+  , NotReq.tests
   ]

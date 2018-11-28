@@ -38,4 +38,5 @@ test-suite HCL-test
     Spec.AndReq
     Spec.Constructors
     Spec.Common
+    Spec.NotReq
     Spec.OrReq
