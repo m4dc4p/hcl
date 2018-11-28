@@ -27,3 +27,19 @@ Executable hangman
   Main-Is:        Hangman.hs
   Hs-Source-Dirs: hangman
   other-modules:  Paths_HCL
+
+test-suite HCL-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  hs-source-dirs: test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  Build-Depends:  base >= 4.7 && < 5, QuickCheck == 2.*, mtl, random, containers, HCL, HUnit
+  other-modules:
+    Spec.AndReq
+    Spec.Constructors
+    Spec.Common
+    Spec.NotReq
+    Spec.OrReq
+    Spec.ReqIf
+    Spec.ReqLift
+    Spec.ReqLift2
