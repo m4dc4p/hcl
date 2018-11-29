@@ -4,8 +4,6 @@ import Test.HUnit
 
 import System.Console.HCL
 
-import Spec.Common
-
 tests = TestLabel "reqLift2" $ TestList $ map test'
   [ ( Nothing, Nothing, Nothing )
   , ( Just 1,  Nothing, Nothing )
@@ -15,5 +13,5 @@ tests = TestLabel "reqLift2" $ TestList $ map test'
 
 test' (x, y, expect) = let label = show x ++ " + " ++ show y in
   TestLabel label $ TestCase $ do
-    val <- runRequest $ reqLift2 (+) (req x) (req y)
+    val <- runRequest $ reqLift2 (+) (reqLiftMaybe x) (reqLiftMaybe y)
     assertEqual "" expect val

@@ -4,8 +4,6 @@ import Test.HUnit
 
 import System.Console.HCL
 
-import Spec.Common
-
 tests = TestLabel "notReq" $ TestList $ map test'
   [ ( Nothing,    Nothing    )
   , ( Just False, Just True  )
@@ -14,5 +12,5 @@ tests = TestLabel "notReq" $ TestList $ map test'
 
 test' (x, expect) = let label = "notReq " ++ show x in
   TestLabel label $ TestCase $ do
-    val <- runRequest $ notReq $ req x
+    val <- runRequest $ notReq $ reqLiftMaybe x
     assertEqual "" expect val
