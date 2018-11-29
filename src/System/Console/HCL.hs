@@ -279,6 +279,8 @@ Several examples are included with the library, including a hangman game you can
   
 -}
 
+{-# LANGUAGE ScopedTypeVariables #-}
+
 module System.Console.HCL 
 (
 -- * Request type and related functions
@@ -408,7 +410,7 @@ type. Same as @liftIO@ in "MonadIO" class (in @Control.Monad.Trans@ module) -}
 reqIO :: IO a -- ^ IO action to perform
          -> Request a -- ^ Result of the IO action, as a Request.
 reqIO io = Request $ catch (fmap Just io) $
-  \e -> const (return Nothing) (e :: IOException)
+  \(_ :: IOException) -> return Nothing
 
 {- |
 The basic request - get a string from the user. If a newline or all whitespace
