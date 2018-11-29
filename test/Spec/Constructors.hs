@@ -4,14 +4,27 @@ import Test.HUnit
 
 import System.Console.HCL
 
-tests = TestLabel "constructors" $ TestList [makeReqTests, reqFailTest]
+tests = TestLabel "constructors" $ TestList
+  [ makeReqTests
+  , reqFailTest
+  , reqIOTests
+  ]
 
-makeReqTests = TestLabel "makeReq" $ TestList $ map test' [ True, False ]
+makeReqTests = TestLabel "makeReq" $ TestList $ map makeReqTest [ True, False ]
 
-test' x = TestLabel (show x) $ TestCase $ do
+makeReqTest x = TestLabel (show x) $ TestCase $ do
   val <- runRequest $ makeReq x
   assertEqual "" (Just x) val
 
 reqFailTest = TestLabel "reqFail" $ TestCase $ do
   val <- runRequest (reqFail :: Request ())
   assertEqual "" Nothing val
+
+reqIOTests = TestLabel "reqIO" $ TestList $ map reqIOTest
+  [ ( "success", return (), Just () )
+  , ( "failure", fail "",   Nothing )
+  ]
+
+reqIOTest (label, x, expect) = TestLabel label $ TestCase $ do
+  val <- runRequest $ reqIO x
+  assertEqual "" expect val

@@ -279,6 +279,8 @@ Several examples are included with the library, including a hangman game you can
   
 -}
 
+{-# LANGUAGE ScopedTypeVariables #-}
+
 module System.Console.HCL 
 (
 -- * Request type and related functions
@@ -306,6 +308,7 @@ import System.IO.Unsafe (unsafePerformIO)
 import System.Random
 import Data.Maybe (isNothing, isJust)
 import Control.Applicative (Alternative (..))
+import Control.Exception (catch, IOException)
 import Control.Monad (when, MonadPlus)
 import Control.Monad.Trans 
 
@@ -406,12 +409,8 @@ Allows @IO@ operations in the @Request@
 type. Same as @liftIO@ in "MonadIO" class (in @Control.Monad.Trans@ module) -}
 reqIO :: IO a -- ^ IO action to perform
          -> Request a -- ^ Result of the IO action, as a Request.
-reqIO io = Request ioVal
-  where
-    ioVal =
-      do
-        val <- io
-        return $ Just val
+reqIO io = Request $ catch (fmap Just io) $
+  \(_ :: IOException) -> return Nothing
 
 {- |
 The basic request - get a string from the user. If a newline or all whitespace
