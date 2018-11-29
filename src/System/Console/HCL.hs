@@ -285,7 +285,7 @@ module System.Console.HCL
 (
 -- * Request type and related functions
   Request,
-  runRequest, execReq, reqIO, makeReq,
+  runRequest, execReq, reqIO, reqLiftMaybe, makeReq,
 -- * Request building blocks
   reqResp, reqInteger, reqInt, reqRead, reqChar, reqPassword,
 -- * Functions lifted into Requests
@@ -411,6 +411,12 @@ reqIO :: IO a -- ^ IO action to perform
          -> Request a -- ^ Result of the IO action, as a Request.
 reqIO io = Request $ catch (fmap Just io) $
   \(_ :: IOException) -> return Nothing
+
+{- |
+Lifts a @"Maybe" a@ into a @'Request' a@. -}
+reqLiftMaybe :: Maybe a -- ^ the value to lift
+                -> Request a -- ^ the resulting 'Request'
+reqLiftMaybe = Request . return
 
 {- |
 The basic request - get a string from the user. If a newline or all whitespace

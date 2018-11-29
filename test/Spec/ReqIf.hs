@@ -4,8 +4,6 @@ import Test.HUnit
 
 import System.Console.HCL
 
-import Spec.Common
-
 tests = TestLabel "reqIf" $ TestList $ map test'
   [ ( Nothing,    Nothing  )
   , ( Just True,  Just 'a' )
@@ -14,5 +12,5 @@ tests = TestLabel "reqIf" $ TestList $ map test'
 
 test' (x, expect) = let label = "reqIf " ++ show x in
   TestLabel label $ TestCase $ do
-    val <- runRequest $ reqIf (req x) (return 'a') (return 'b')
+    val <- runRequest $ reqIf (reqLiftMaybe x) (return 'a') (return 'b')
     assertEqual "" expect val

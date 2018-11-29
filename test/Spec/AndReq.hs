@@ -4,8 +4,6 @@ import Test.HUnit
 
 import System.Console.HCL
 
-import Spec.Common
-
 tests = TestLabel "andReq" $ TestList $ map test'
   [ ( Nothing,    Nothing,    Nothing    )
   , ( Just False, Nothing,    Just False )
@@ -19,5 +17,5 @@ tests = TestLabel "andReq" $ TestList $ map test'
 
 test' (x, y, expect) = let label = show x ++ " andReq " ++ show y
   in TestLabel label $ TestCase $ do
-    val <- runRequest $ req x `andReq` req y
+    val <- runRequest $ reqLiftMaybe x `andReq` reqLiftMaybe y
     assertEqual "" val expect
