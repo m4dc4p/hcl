@@ -284,7 +284,7 @@ Several examples are included with the library, including a hangman game you can
 module System.Console.HCL 
 (
 -- * Request type and related functions
-  Request,
+  Request (..),
   runRequest, execReq, reqIO, reqLiftMaybe, makeReq,
 -- * Request building blocks
   reqResp, reqInteger, reqInt, reqRead, reqChar, reqPassword,
