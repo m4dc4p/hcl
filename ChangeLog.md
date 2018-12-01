@@ -1,5 +1,9 @@
 # HCL Change Log
 
+## current
+
+* added `ChangeLog.md` to cabal file
+
 ## v1.7
 
 * `reqIO` now catches `IOError` and returns `Nothing`
