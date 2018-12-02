@@ -38,6 +38,7 @@ test-suite HCL-test
   other-modules:
     Spec.AndReq
     Spec.Constructors
+    Spec.MonadPlus
     Spec.NotReq
     Spec.OrReq
     Spec.ReqIf

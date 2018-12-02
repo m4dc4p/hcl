@@ -363,11 +363,7 @@ Because we have defined @'Request'@ as @"MonadPlus"@, we must also
 define it as @"Alternative"@. -}
 instance Alternative Request where
   empty = reqFail
-  x <|> y = Request $ do
-    maybeVal <- runRequest x
-    case maybeVal of
-      Nothing  -> runRequest y
-      Just val -> return $ Just val
+  (<|>) = reqCont
 
 {- |
 'Request' behaviour as a @"MonadPlus"@ allows for successive fallback
@@ -743,12 +739,11 @@ In either case, return the result of the successful request. -}
 reqCont :: Request a -- ^ First request to evaluate.
            -> Request a -- ^ Continuation request which is evaluated if first fails.
            -> Request a -- ^ Result.
-reqCont req cont =
-  do
-    result <- reqWhich req
-    case result of
-      Left _ -> cont
-      Right val -> return val
+reqCont req cont = Request $ do
+  req' <- catch (runRequest req) (\(_ :: IOError) -> return Nothing)
+  case req' of
+    Nothing -> runRequest cont
+    Just x  -> return $ Just x
 
 {- |
 Indicates if the request failed or succceeded. If @"Left" ()@ is

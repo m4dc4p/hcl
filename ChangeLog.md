@@ -3,6 +3,7 @@
 ## current
 
 * added `ChangeLog.md` to cabal file
+* `reqCont` catches `IOError` in first `Request`, and falls back to second
 
 ## v1.7
 
