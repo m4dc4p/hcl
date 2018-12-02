@@ -15,13 +15,16 @@ mzeroTest = TestLabel "mzero" $ TestCase $ do
   assertEqual "" Nothing (val :: Maybe ())
 
 mplusTests = TestLabel "mplus" $ TestList $ map mplusTest
-  [ ( "both pass",    makeReq 1,         makeReq 2, Just 1  )
-  , ( "first fails",  reqFail,           makeReq 1, Just 1  )
-  , ( "first errors", Request $ fail "", makeReq 1, Just 1  )
-  , ( "second fails", makeReq 1,         reqFail,   Just 1  )
-  , ( "both fail",    reqFail,           reqFail,   Nothing )
+  [ ( "both pass",     makeReq 1, makeReq 2, Just 1  )
+  , ( "first fails",   reqFail,   makeReq 2, Just 2  )
+  , ( "first errors",  err,       makeReq 2, Just 2  )
+  , ( "second fails",  makeReq 1, reqFail,   Just 1  )
+  , ( "second errors", makeReq 1, err,       Just 1  )
+  , ( "both fail",     reqFail,   reqFail,   Nothing )
   ]
 
 mplusTest (label, x, y, expect) = TestLabel label $ TestCase $ do
   val <- runRequest $ x `mplus` y
   assertEqual "" expect val
+
+err = Request $ fail ""
