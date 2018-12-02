@@ -641,7 +641,7 @@ reqDefault :: Request a -- ^ Request to evaluate.
 reqDefault req def =
   Request $ 
   do
-    val <- runRequest req
+    val <- catch (runRequest req) (\(_ :: IOError) -> return Nothing)
     case val of
       Nothing -> return $ Just def
       v -> return v

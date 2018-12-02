@@ -4,6 +4,7 @@
 
 * added `ChangeLog.md` to cabal file
 * `reqCont` catches `IOError` in first `Request`, and falls back to second
+* `reqDefault` catches `IOError` and returns the default value
 
 ## v1.7
 

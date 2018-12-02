@@ -9,6 +9,7 @@ import qualified Spec.Constructors as Constructors
 import qualified Spec.MonadPlus as MonadPlus
 import qualified Spec.NotReq as NotReq
 import qualified Spec.OrReq as OrReq
+import qualified Spec.ReqDefault as ReqDefault
 import qualified Spec.ReqIf as ReqIf
 import qualified Spec.ReqLift as ReqLift
 import qualified Spec.ReqLift2 as ReqLift2
@@ -23,6 +24,7 @@ tests = TestList
   , AndReq.tests
   , OrReq.tests
   , NotReq.tests
+  , ReqDefault.tests
   , ReqIf.tests
   , ReqLift.tests
   , ReqLift2.tests
