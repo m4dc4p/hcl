@@ -401,8 +401,10 @@ instance MonadIO Request where
   liftIO = reqIO
 
 {- |
-Allows @IO@ operations in the @Request@
-type. Same as @liftIO@ in "MonadIO" class (in @Control.Monad.Trans@ module) -}
+Allows @"IO"@ operations in the @Request@ type. If the @"IO"@
+operation throws an @"IOError", the resulting @'Request'@ will return
+@Nothing@.  Same as @liftIO@ in "MonadIO" class (in
+@Control.Monad.Trans@ module) -}
 reqIO :: IO a -- ^ IO action to perform
          -> Request a -- ^ Result of the IO action, as a Request.
 reqIO io = Request $ catch (fmap Just io) $
@@ -529,7 +531,7 @@ reqConst :: a -- ^ Value to make into a request.
             -> Request a -- ^ Result.
 reqConst val = return val 
 
--- | Lifts a one-argument function into @Request@ types. 
+-- | Lifts a one-argument function into @'Request'@ types.
 reqLift :: (a -> b) -- ^ Function to lift.
            -> Request a -- ^ Argument to function.
            -> Request b -- ^ Result.
@@ -539,9 +541,9 @@ reqLift f req =
     return (f reqVal)
 
 {- |
-Lifts a two argument function into @Request@ types. The arguments to the function
-are evaluated in order, from left to right, since the @Request@ monad imposes
-sequencing. -}
+Lifts a two argument function into @'Request'@ types. The arguments to
+the function are evaluated in order, from left to right, since the
+@'Request'@ "Monad" imposes sequencing. -}
 reqLift2 :: (a -> b -> c) -- ^ Function to lift.
             -> Request a -- ^ First argument to function.
             -> Request b -- ^ Second argument to function.
@@ -591,10 +593,11 @@ required (Request req) =
           Just v -> return (Just v)
 
 {- |
-Like the @maybe@ function, but for requests. Given a request value, 
-a default value,and a function that maps @b@ to @Request a@,
-this function either returns the default if the request value is nothing,
-or it applies the function given to the value of the request and returns it.
+Like the @maybe@ function, but for requests. Given a request value, a
+default value, and a function that maps @a@ to @'Request' b@, this
+function either returns the default if the request value is @Nothing@
+or an @"IOError"@ is thrown, or it applies the function given to the
+value of the request and returns it.
 -}
 reqMaybe :: Request a -- ^ Request to evaluate.
             -> Request b -- ^ Default value.
@@ -611,10 +614,12 @@ reqMaybe (Request req) (Request def) fun =
           Request nextReqVal = fun v
 
 {- |
-Runs the request while the condition given holds,
-then returns the result. Good for verification. -}
-reqWhile :: (a -> Request Bool)
-            -> Request a
+Runs the request while the condition given holds, then returns the
+first result where it doesn't. Good for verification. If either
+request or condition return @Nothing@ at any point, the reault will
+also be @Nothing@. -}
+reqWhile :: (a -> Request Bool) -- ^ the condition
+            -> Request a -- ^ the request
             -> Request a
 reqWhile cond req =
   do
@@ -625,16 +630,17 @@ reqWhile cond req =
       else return reqVal
       
 {- |
-Runs the request until the condition given is satisfied,
-then returns the result. -}
+Runs the request until the condition given is satisfied, then returns
+the first result that satisfies it. If either request or condition
+return @Notthing@ the result will also be @Nothing@. -}
 reqUntil :: (a -> Request Bool) -- ^ Condition to test.
             -> Request a -- ^ Request value to evaluate according to test.
             -> Request a -- ^ Result.
 reqUntil cond req = reqWhile ((reqLift not) . cond) req
       
 {- |
-Requests a response from user. If @Nothing@ is returned,
-assumes default and returns that. -}
+Requests a response from user. If @Nothing@ is returned or an
+@"IOError"@ is thrown, assumes default and returns that. -}
 reqDefault :: Request a -- ^ Request to evaluate.
               -> a -- ^ Default value.
               -> Request a -- ^ Result.
@@ -733,9 +739,9 @@ reqIterate fn initial =
       Right val -> reqIterate fn val
 
 {- |
-Takes a request and a "continuation" request. If the
-first request results in @Nothing@, run the second request.
-In either case, return the result of the successful request. -}
+Takes a request and a "continuation" request. If the first request
+results in @Nothing@ or an @"IOError"@ is thrown, run the second
+request.  In either case, return the result of the successful request. -}
 reqCont :: Request a -- ^ First request to evaluate.
            -> Request a -- ^ Continuation request which is evaluated if first fails.
            -> Request a -- ^ Result.
@@ -749,7 +755,8 @@ reqCont req cont = Request $ do
 Indicates if the request failed or succceeded. If @"Left" ()@ is
 returned, the request failed. If @"Right" v@ is returned, the request
 produced a value. Though the value returned is itself a request, it
-will always be valid. -}
+will always be valid. An @"IOError"@ being thrown by the original
+request is considered a failire.-}
 reqWhich :: Request a -- ^ Request to evaluate.
             -> Request (Either () a) -- ^ Result.
 reqWhich req =
