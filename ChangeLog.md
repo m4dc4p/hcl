@@ -4,7 +4,7 @@
 
 * added `ChangeLog.md` to cabal file
 * `reqCont` catches `IOError` in first `Request`, and falls back to second
-* `reqDefault` catches `IOError` and returns the default value
+* `reqDefault`, `reqWhich` and `reqMaybe` catch `IOError` and fallback appropriately
 
 ## v1.7
 

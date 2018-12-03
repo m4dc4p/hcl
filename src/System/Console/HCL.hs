@@ -603,7 +603,7 @@ reqMaybe :: Request a -- ^ Request to evaluate.
 reqMaybe (Request req) (Request def) fun =
   Request $
   do
-    val <- req
+    val <- catch req $ \(_ :: IOError) -> return Nothing
     case val of
       Nothing -> def
       Just v -> nextReqVal

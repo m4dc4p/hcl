@@ -13,6 +13,8 @@ import qualified Spec.ReqDefault as ReqDefault
 import qualified Spec.ReqIf as ReqIf
 import qualified Spec.ReqLift as ReqLift
 import qualified Spec.ReqLift2 as ReqLift2
+import qualified Spec.ReqMaybe as ReqMaybe
+import qualified Spec.ReqWhich as ReqWhich
 
 main = do
   counts <- runTestTT tests
@@ -25,6 +27,8 @@ tests = TestList
   , OrReq.tests
   , NotReq.tests
   , ReqDefault.tests
+  , ReqMaybe.tests
+  , ReqWhich.tests
   , ReqIf.tests
   , ReqLift.tests
   , ReqLift2.tests
