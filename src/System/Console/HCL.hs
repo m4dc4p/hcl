@@ -521,7 +521,7 @@ reqIf test thenCase elseCase = do
 -- | Takes a value and makes it into a request. 
 reqConst :: a -- ^ Value to make into a request.
             -> Request a -- ^ Result.
-reqConst val = return val 
+reqConst = return
 
 -- | Lifts a one-argument function into @'Request'@ types.
 reqLift :: (a -> b) -- ^ Function to lift.
