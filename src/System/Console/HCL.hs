@@ -512,9 +512,9 @@ reqIf :: Request Bool -- ^ The test to apply
          -> Request a -- ^ Request to evaluate if test is true.
          -> Request a -- ^ Request to evaluate if test if false.
          -> Request a -- ^ Result.
-reqIf test thenCase elseCase =
-  test `andMaybe` \tb ->
-    if tb
+reqIf test thenCase elseCase = do
+  cond <- test
+  if cond
     then thenCase
     else elseCase
 
