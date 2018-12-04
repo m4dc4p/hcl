@@ -638,12 +638,7 @@ reqDefault :: Request a -- ^ Request to evaluate.
               -> a -- ^ Default value.
               -> Request a -- ^ Result.
 reqDefault req def =
-  Request $ 
-  do
-    val <- catch (runRequest req) (\(_ :: IOError) -> return Nothing)
-    case val of
-      Nothing -> return $ Just def
-      v -> return v
+  req <|> makeReq def
 
 {- |
 Ask a request forever -- until failure. -}
