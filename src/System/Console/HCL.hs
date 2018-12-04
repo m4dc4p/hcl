@@ -483,13 +483,12 @@ fails. -}
 andReq :: Request Bool -- ^ Left boolean value.
           -> Request Bool -- ^ Right boolean value.
           -> Request Bool -- ^ Result value.
-andReq left right =
-      left `andMaybe` \lb ->
-      Request $
-        case lb of
-          False -> return $ Just False
-          True  -> runRequest right   
-          
+andReq left right = do
+  l <- left
+  if l
+    then right
+    else return False
+
 {- |
 @||@ operator for requests (with failure). Behaves similarly, including
 "short-circuit" behavior. If either condition fails, the entire @Request@
@@ -497,20 +496,16 @@ fails. -}
 orReq :: Request Bool -- ^ Left boolean value.
          -> Request Bool -- ^ Right boolean value.
          -> Request Bool -- ^ Result value.
-orReq left right =
-    left `andMaybe` \lb ->
-    Request $ 
-      case lb of
-          True -> return (Just True)
-          False -> runRequest right 
-
+orReq left right = do
+  l <- left
+  if l
+    then return True
+    else right
 
 -- | not operator for requests.
 notReq :: Request Bool -- ^ Request to evaluate.
           -> Request Bool -- ^ Result value.
-notReq expr =
-  expr `andMaybe` \nb ->
-    Request $ return $ Just $ not nb
+notReq = fmap not
 
 -- | If statement for requests. 
 reqIf :: Request Bool -- ^ The test to apply
