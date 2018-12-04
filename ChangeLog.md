@@ -27,3 +27,8 @@
 * modified code to compile against QuickCheck 2.*
   * made `Request` a `Functor` and `Applicative`
 * implemented `reqChar` and `reqPassword`
+
+## v1.4
+
+* QuickCheck 2 updates
+  * Thanks to Sergei Trofimovich for a patch which makes sure HCL compiles against QuickCheck 1.
