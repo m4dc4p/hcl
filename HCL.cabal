@@ -39,6 +39,7 @@ test-suite HCL-test
     Spec.AndReq
     Spec.Constructors
     Spec.ReqMaybe
+    Spec.Monad
     Spec.MonadPlus
     Spec.NotReq
     Spec.OrReq

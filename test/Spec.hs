@@ -6,6 +6,7 @@ import Test.HUnit
 
 import qualified Spec.AndReq as AndReq
 import qualified Spec.Constructors as Constructors
+import qualified Spec.Monad as Monad
 import qualified Spec.MonadPlus as MonadPlus
 import qualified Spec.NotReq as NotReq
 import qualified Spec.OrReq as OrReq
@@ -32,5 +33,6 @@ tests = TestList
   , ReqIf.tests
   , ReqLift.tests
   , ReqLift2.tests
+  , Monad.tests
   , MonadPlus.tests
   ]

@@ -350,7 +350,7 @@ instance Applicative Request where
     fmap f' x
 
 {- |
-'Request' behavior as a @"Monad"@ covers failure - when
+@'Request'@ behavior as a @"Monad"@ covers failure - when
 a request results in @Nothing@, all bind
 operations fail afterwards. Thus, when one request fails,
 all subsequent requests automatically fail. -}
@@ -366,35 +366,31 @@ instance Alternative Request where
   (<|>) = reqCont
 
 {- |
-'Request' behaviour as a @"MonadPlus"@ allows for successive fallback
+@'Request'@ behaviour as a @"MonadPlus"@ allows for successive fallback
 requests to be used on failure. -}
 instance MonadPlus Request
 
 {- |
 Takes a value and makes it into a request. Should
-not be an @IO (Maybe a)@ type value, unless
+not be an @"IO" ("Maybe" a)@ type value, unless
 multiply nested values is desired. -}
 makeReq :: a -- ^ The value to turn into a Request.
            -> Request a -- ^ The value as a Request.
-makeReq val = Request (return $ Just val)
+makeReq = Request . return . Just
 
 {- |
-If the request given results in @Nothing@, @Nothing@
-is returned. Otherwise, the value held in the Just
-constructor is passed to the "next" function given. This is essentially
-the bind operation. -}
+If the request given results in @Nothing@, @Nothing@ is
+returned. Otherwise, the value held in the Just constructor is passed
+to the function given. This is essentially the bind operation. -}
 andMaybe :: Request a -- ^ Request to try.
             -> (a -> Request b) -- ^ Function which processes the result of the previous request and returns a new request.
             -> Request b -- ^ The new request returned.
 andMaybe (Request req) next =
-  Request $
-  do
+  Request $ do
     v <- req
     case v of
         Nothing -> return Nothing
-        Just x  -> nextReqVal
-          where
-            Request nextReqVal = next x
+        Just x  -> runRequest $ next x
 
 -- | Allow the Request type to use IO operations.
 instance MonadIO Request where
