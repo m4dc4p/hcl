@@ -578,15 +578,12 @@ returned. That is, the request is repeated until a
 valid (i.e. not @Nothing@) response is returned. -}
 required :: Request a -- ^ Request to evaluate.
             -> Request a -- ^ Result.
-required (Request req) =
-    Request required'
-  where
-    required' =
-      do
-        val <- req
-        case val of
-          Nothing -> required'
-          Just v -> return (Just v)
+required req =
+  Request $ do
+    val <- catch (runRequest req) $ \(_ :: IOError) -> return Nothing
+    case val of
+      Nothing -> runRequest $ required req
+      Just v -> return (Just v)
 
 {- |
 Like the @maybe@ function, but for requests. Given a request value, a
