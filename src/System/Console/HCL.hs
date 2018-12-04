@@ -426,19 +426,19 @@ reqResp =
      else return $ Just val
 
 {- |
-Gets an "Integer" from the user. If the value entered cannot be converted,
+Gets an @"Integer"@ from the user. If the value entered cannot be converted,
 the request fails. -}
 reqInteger :: Request Integer
 reqInteger = reqRead reqResp
 
 {- |
-Gets an "Int" from the user. If the value entered cannot be converted, the
+Gets an @"Int"@ from the user. If the value entered cannot be converted, the
 request fails. -}
 reqInt :: Request Int
 reqInt = reqRead reqResp
 
 {- |
-Uses @reads@ to process a request. If the value cannot be parsed,
+Uses @"reads"@ to process a request. If the value cannot be parsed,
 fails. Otherwise, returns the value parsed. -}
 reqRead :: (Read a) => Request String -- ^ A request that returns a string (generally 'reqResp'), which will then be parsed.
            -> Request a -- ^ The value parsed.
@@ -452,7 +452,7 @@ reqRead req =
         _           -> return Nothing
 
 {- |
-@reqChar@ requests a single character. Unlike other @Request@s, it
+@'reqChar'@ requests a single character. Unlike other @'Request'@s, it
 does not wait for the user to hit enter; it simply returns the first
 keystroke. -}
 reqChar :: Request Char
@@ -465,7 +465,8 @@ reqChar = Request $ do
   return $ Just val
 
 {- |
-@reqPassword@ works like 'reqResp' except that it does not echo the user's input to standard output. -}
+@'reqPassword'@ works like @'reqResp'@ except that it does not echo
+the user's input to standard output. -}
 reqPassword :: Request String
 reqPassword = Request $ do
   echo <- hGetEcho stdin
@@ -477,7 +478,7 @@ reqPassword = Request $ do
 
 {- |
 @&&@ operator for requests (with failure). Behaves similarly, including
-"short-circuit" behavior. If either condition fails, the entire @Request@
+"short-circuit" behavior. If either condition fails, the entire @'Request'@
 fails. -}
 andReq :: Request Bool -- ^ Left boolean value.
           -> Request Bool -- ^ Right boolean value.
@@ -509,7 +510,7 @@ notReq :: Request Bool -- ^ Request to evaluate.
           -> Request Bool -- ^ Result value.
 notReq expr =
   expr `andMaybe` \nb ->
-    Request $ return (Just $ not nb)
+    Request $ return $ Just $ not nb
 
 -- | If statement for requests. 
 reqIf :: Request Bool -- ^ The test to apply
@@ -539,7 +540,7 @@ reqLift f req =
 {- |
 Lifts a two argument function into @'Request'@ types. The arguments to
 the function are evaluated in order, from left to right, since the
-@'Request'@ "Monad" imposes sequencing. -}
+@'Request'@ @"Monad"@ imposes sequencing. -}
 reqLift2 :: (a -> b -> c) -- ^ Function to lift.
             -> Request a -- ^ First argument to function.
             -> Request b -- ^ Second argument to function.
@@ -555,7 +556,7 @@ Returns true if the user answer @y@ or @Y@. Allows
 a default to be specified, and allows failure if
 no default is given. -}
 reqAgree :: Maybe Bool -- ^ Default value (if any).
-            -> Request String -- ^ Request which gets a string (usually reqResp).
+            -> Request String -- ^ Request which gets a string (usually @'reqResp'@).
             -> Request Bool -- ^ Result.
 reqAgree def req = Request result
   where
