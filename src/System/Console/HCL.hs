@@ -645,7 +645,7 @@ Ask a request forever -- until failure. -}
 reqForever :: Request a -- ^ Request to ask forever.
               -> Request a -- ^ Result.
 reqForever req =
-  req `andMaybe` \_ -> reqForever req
+  req >> reqForever req
 
 {- |
 Given a list of items and programs to run, displays a menu
