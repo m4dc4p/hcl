@@ -10,6 +10,7 @@ import qualified Spec.Monad as Monad
 import qualified Spec.MonadPlus as MonadPlus
 import qualified Spec.NotReq as NotReq
 import qualified Spec.OrReq as OrReq
+import qualified Spec.ReqAgree as ReqAgree
 import qualified Spec.ReqDefault as ReqDefault
 import qualified Spec.ReqIf as ReqIf
 import qualified Spec.ReqLift as ReqLift
@@ -33,6 +34,7 @@ tests = TestList
   , ReqIf.tests
   , ReqLift.tests
   , ReqLift2.tests
+  , ReqAgree.tests
   , Monad.tests
   , MonadPlus.tests
   ]

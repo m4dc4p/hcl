@@ -43,6 +43,7 @@ test-suite HCL-test
     Spec.MonadPlus
     Spec.NotReq
     Spec.OrReq
+    Spec.ReqAgree
     Spec.ReqDefault
     Spec.ReqIf
     Spec.ReqLift

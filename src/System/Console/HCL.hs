@@ -549,16 +549,12 @@ no default is given. -}
 reqAgree :: Maybe Bool -- ^ Default value (if any).
             -> Request String -- ^ Request which gets a string (usually @'reqResp'@).
             -> Request Bool -- ^ Result.
-reqAgree def req = Request result
-  where
-    Request result = reqMaybe req (Request returnDefault) (Request . returnAgreement)
-    returnDefault = return $ maybe Nothing (\d -> Just d) def
-    returnAgreement resp =
-      case clean resp of
-          ('y':_) -> return $ Just True
-          ('n':_) -> return $ Just False
-          _ -> returnDefault
-    clean = (map toLower) . filter (not . isSpace)
+reqAgree def req =
+  (req >>= f) <|> reqLiftMaybe def where
+  f x = case map toLower x of
+    ('y':_) -> return True
+    ('n':_) -> return False
+    _       -> reqFail
 
 -- | Automatic failure. Useful in menus to quit or return to the previous menu.
 reqFail :: Request a
