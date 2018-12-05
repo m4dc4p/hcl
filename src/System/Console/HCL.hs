@@ -569,7 +569,7 @@ required :: Request a -- ^ Request to evaluate.
 required req = req <|> required req
 
 {- |
-Like the @maybe@ function, but for requests. Given a request value, a
+Like the @"maybe"@ function, but for requests. Given a request value, a
 default value, and a function that maps @a@ to @'Request' b@, this
 function either returns the default if the request value is @Nothing@
 or an @"IOError"@ is thrown, or it applies the function given to the
@@ -579,15 +579,7 @@ reqMaybe :: Request a -- ^ Request to evaluate.
             -> Request b -- ^ Default value.
             -> (a -> Request b) -- ^ Function to map b to Request a.
             -> Request b -- ^ Result.
-reqMaybe (Request req) (Request def) fun =
-  Request $
-  do
-    val <- catch req $ \(_ :: IOError) -> return Nothing
-    case val of
-      Nothing -> def
-      Just v -> nextReqVal
-        where
-          Request nextReqVal = fun v
+reqMaybe  req def f = (req >>= f) <|> def
 
 {- |
 Runs the request while the condition given holds, then returns the
