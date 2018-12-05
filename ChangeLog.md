@@ -4,6 +4,7 @@
 
 * added `ChangeLog.md` to cabal file
 * request functions with fallbacks catch `IOError` and fallback appropriately
+* code refactoring
 
 ## v1.7
 
