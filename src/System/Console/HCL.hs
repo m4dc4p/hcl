@@ -674,15 +674,16 @@ reqMenuEnd :: [(String, Request a)]
 reqMenuEnd = []
 
 {- |
-Executes the request given and, if a failure value occurs,
-executes the "Bool" request given (usually some sort of prompt asking
-if they want to quit). If the answer is @True@, the failure value propagates. Otherwise,
-the initial request is run again.
--}
+Executes the request given and, if a failure value occurs, executes
+the @"Bool"@ request given (usually some sort of prompt asking if they
+want to quit). If the answer is @True@, the failure value
+propagates. Otherwise, the initial request is run again. -}
 reqConfirm :: Request Bool -- ^ When evaluated, determines if the failure is allowed to proceed or not.
   -> Request a -- ^ The request to run and to watch for failure
   -> Request a -- ^ Result of the request (if it did not fail).
-reqConfirm conf req = reqCont req (reqIf conf reqFail (reqConfirm conf req))
+reqConfirm conf req = req <|> reqIf conf
+  reqFail
+  (reqConfirm conf req)
   
 {- |
 Takes an initial value and function which produces a request
