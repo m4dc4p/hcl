@@ -1,6 +1,6 @@
 # HCL Change Log
 
-## current
+## v1.7.1
 
 * added `ChangeLog.md` to cabal file
 * request functions with fallbacks catch `IOError` and fallback appropriately
