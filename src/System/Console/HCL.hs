@@ -716,13 +716,7 @@ will always be valid. An @"IOError"@ being thrown by the original
 request is considered a failire.-}
 reqWhich :: Request a -- ^ Request to evaluate.
             -> Request (Either () a) -- ^ Result.
-reqWhich req =
-  do
-    let -- default value, indicating a bad selection was made.
-        failed = Request (return (Just (Left ())))
-        -- Indicates a valid item was selected.
-        success val =  Request (return (Just (Right val)))
-    reqMaybe req failed success
+reqWhich req = fmap Right req <|> return (Left ())
 
 {- |
 Give a function from @a -> b@, an initial value,
