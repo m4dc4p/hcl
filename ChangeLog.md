@@ -1,5 +1,9 @@
 # HCL Change Log
 
+## current
+
+* better documentation
+
 ## v1.7.1
 
 * added `ChangeLog.md` to cabal file

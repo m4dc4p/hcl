@@ -649,10 +649,10 @@ reqMenu choices =
     choice
 
 -- | Used to add an individual entry to a menu that is being built. 
-reqMenuItem :: String
-  -> Request a
-  -> [(String, Request a)]
-  -> [(String, Request a)]
+reqMenuItem :: String -- ^ the label for the selection
+  -> Request a -- ^ the @'Request'@ to run when selected
+  -> [(String, Request a)] -- ^ the menu being built
+  -> [(String, Request a)] -- ^ the resulting menu
 reqMenuItem label item = (:) (label, item) 
 
 -- | Creates a submenu within a menu. When the submenu exits, control returns to the item specified.
@@ -664,9 +664,9 @@ reqSubMenu :: Request a -- ^ The menu to return to.
 reqSubMenu prevMenu label subMenu = (:) (label, reqForever $ reqCont (reqMenu subMenu) prevMenu)  
 
 -- | Causes the program to exit from the current menu.  
-reqMenuExit :: String
-  -> [(String, Request a)]
-  -> [(String, Request a)]
+reqMenuExit :: String -- ^ the label, e.g.: @\"quit\"@
+  -> [(String, Request a)] -- ^ the menu being built
+  -> [(String, Request a)] -- ^ the resulting menu
 reqMenuExit label = (:) (label, reqFail)
 
 -- | Ends a list of menu item definitions.
