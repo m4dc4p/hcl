@@ -719,27 +719,17 @@ reqWhich :: Request a -- ^ Request to evaluate.
 reqWhich req = fmap Right req <|> return (Left ())
 
 {- |
-Give a function from @a -> b@, an initial value,
-and a @Request@ for @a@, builds a @Request@ for @b@. When @(Request a)@ fails,
-then the function returns whatever @(Request b)@ has been built.
--}
+Give a function from @a -> b@, an initial value, and a @'Request'@ for
+@a@, builds a @'Request'@ for @b@. When @('Request' a)@ fails, then
+the function returns whatever @('Request' b)@ has been built. -}
 reqFoldl :: (a -> b -> Request b) -- ^ Accumulating function.
             -> b -- ^ Initial value.
             -> Request a -- ^ Request to evaluate.
             -> Request b -- ^ Result.
-reqFoldl fn initial req =
-    reqFoldl' initial 
-  where
-    reqFoldl' acc =
-      do
-        result <- reqWhich req
-        case result of
-          Left _ -> return acc
-          Right val ->
-            do
-              result <- fn val acc
-              reqFoldl' result
-
+reqFoldl f x req = result <|> return x where
+  result = do
+    reqVal <- req
+    f reqVal x
 
 {- |
 Given a request, builds a list of response. When
