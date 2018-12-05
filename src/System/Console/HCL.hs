@@ -551,7 +551,7 @@ reqAgree :: Maybe Bool -- ^ Default value (if any).
             -> Request Bool -- ^ Result.
 reqAgree def req =
   (req >>= f) <|> reqLiftMaybe def where
-  f x = case map toLower x of
+  f x = case dropWhile isSpace $ map toLower x of
     ('y':_) -> return True
     ('n':_) -> return False
     _       -> reqFail
