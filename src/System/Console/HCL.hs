@@ -589,13 +589,11 @@ also be @Nothing@. -}
 reqWhile :: (a -> Request Bool) -- ^ the condition
             -> Request a -- ^ the request
             -> Request a
-reqWhile cond req =
-  do
-    reqVal <- req
-    testVal <- cond reqVal
-    if testVal
-      then reqWhile cond req
-      else return reqVal
+reqWhile cond req = do
+  val <- req
+  reqIf (cond val)
+    (reqWhile cond req)
+    (return val)
       
 {- |
 Runs the request until the condition given is satisfied, then returns
