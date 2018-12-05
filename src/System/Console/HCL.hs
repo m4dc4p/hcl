@@ -693,12 +693,7 @@ own output (e.g. a shell maintaining an environment). -}
 reqIterate :: (a -> Request a) -- ^ Iterative function which transforms a to Request a.
               -> a -- ^ Initial value used.
               -> Request a -- ^ Result of evaulation.
-reqIterate fn initial =
-  do
-    result <- reqWhich (fn initial)
-    case result of
-      Left _ -> return initial
-      Right val -> reqIterate fn val
+reqIterate f x = f x >>= reqIterate f
 
 {- |
 Takes a request and a "continuation" request. If the first request
