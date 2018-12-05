@@ -483,11 +483,9 @@ fails. -}
 andReq :: Request Bool -- ^ Left boolean value.
           -> Request Bool -- ^ Right boolean value.
           -> Request Bool -- ^ Result value.
-andReq left right = do
-  l <- left
-  if l
-    then right
-    else return False
+andReq left right = reqIf left
+  right
+  (return False)
 
 {- |
 @||@ operator for requests (with failure). Behaves similarly, including
@@ -496,11 +494,9 @@ fails. -}
 orReq :: Request Bool -- ^ Left boolean value.
          -> Request Bool -- ^ Right boolean value.
          -> Request Bool -- ^ Result value.
-orReq left right = do
-  l <- left
-  if l
-    then return True
-    else right
+orReq left right = reqIf left
+    (return True)
+    right
 
 -- | not operator for requests.
 notReq :: Request Bool -- ^ Request to evaluate.
