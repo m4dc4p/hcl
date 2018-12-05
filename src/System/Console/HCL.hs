@@ -566,12 +566,7 @@ returned. That is, the request is repeated until a
 valid (i.e. not @Nothing@) response is returned. -}
 required :: Request a -- ^ Request to evaluate.
             -> Request a -- ^ Result.
-required req =
-  Request $ do
-    val <- catch (runRequest req) $ \(_ :: IOError) -> return Nothing
-    case val of
-      Nothing -> runRequest $ required req
-      Just v -> return (Just v)
+required req = req <|> required req
 
 {- |
 Like the @maybe@ function, but for requests. Given a request value, a
