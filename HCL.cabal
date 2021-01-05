@@ -19,17 +19,20 @@ extra-source-files: ChangeLog.md
 Data-files: hangman/2of12.txt
 
 Library
+  default-language: Haskell2010
   Build-Depends:  base >= 4.9.0.0 && < 5, QuickCheck == 2.*, mtl, random, containers
   Exposed-modules: System.Console.HCL
   Hs-Source-Dirs: src
 
 Executable hangman
+  default-language: Haskell2010
   Build-Depends:  base >= 4.7 && < 5, QuickCheck == 2.*, mtl, random, containers, HCL
   Main-Is:        Hangman.hs
   Hs-Source-Dirs: hangman
   other-modules:  Paths_HCL
 
 test-suite HCL-test
+  default-language: Haskell2010
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   hs-source-dirs: test
