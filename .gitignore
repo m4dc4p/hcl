@@ -8,3 +8,4 @@ dist
 *.context
 .setup-config
 .installed-pkg-config
+.stack-work

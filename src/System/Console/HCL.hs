@@ -350,12 +350,16 @@ instance Applicative Request where
     fmap f' x
 
 {- |
-@'Request'@ behavior as a @"Monad"@ covers failure - when
-a request results in @Nothing@, all bind
-operations fail afterwards. Thus, when one request fails,
-all subsequent requests automatically fail. -}
+@'Request'@ behavior as a @"Monad"@ all bind operations fail
+afterwards. Thus, when one request fails, all subsequent requests
+automatically fail. -}
 instance Monad Request where
   f >>= g = f `andMaybe` g
+
+{- |
+Request behavior as a @MonadFail@ covers failure - when
+a request results in @Nothing@, -}
+instance MonadFail Request where
   fail _ = reqFail
 
 {- |

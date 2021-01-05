@@ -2,6 +2,8 @@
 
 ## current
 
+* updated to haskell stack
+* implemented MonadFail
 * better documentation
 
 ## v1.7.1
