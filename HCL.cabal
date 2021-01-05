@@ -19,7 +19,7 @@ extra-source-files: ChangeLog.md
 Data-files: hangman/2of12.txt
 
 Library
-  Build-Depends:  base >= 4.7 && < 5, QuickCheck == 2.*, mtl, random, containers
+  Build-Depends:  base >= 4.9.0.0 && < 5, QuickCheck == 2.*, mtl, random, containers
   Exposed-modules: System.Console.HCL
   Hs-Source-Dirs: src
 
