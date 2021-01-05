@@ -14,7 +14,7 @@ Description:
   Dates, or other structured values), build lists of values, and use simple
   menus. It is not intended to build complex interfaces with full cursor
   control. It is oriented towards line-based interfaces.
-cabal-version: >= 1.8
+cabal-version: >= 1.10
 extra-source-files: ChangeLog.md
 Data-files: hangman/2of12.txt
 
