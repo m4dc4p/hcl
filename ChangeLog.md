@@ -1,6 +1,6 @@
 # HCL Change Log
 
-## current
+## v.1.8
 
 * updated to haskell stack
 * implemented MonadFail
