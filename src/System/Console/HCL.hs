@@ -311,6 +311,7 @@ import Control.Applicative (Alternative (..))
 import Control.Exception (catch, IOException)
 import Control.Monad (when, MonadPlus)
 import Control.Monad.Trans 
+import qualified Control.Monad.Catch as C
 
 {- |
 The @Request@ data type represents a value requested interactively. The
@@ -409,6 +410,15 @@ reqIO :: IO a -- ^ IO action to perform
          -> Request a -- ^ Result of the IO action, as a Request.
 reqIO io = Request $ catch (fmap Just io) $
   \(_ :: IOException) -> return Nothing
+
+-- | Allow throwing exceptions compatible with the exceptions package
+instance C.MonadThrow Request where
+  throwM = Request . C.throwM
+
+-- | Allow catching exceptions compatible with the exceptions package
+instance C.MonadCatch Request where
+  catch happy exceptional =
+    Request $ C.catch (runRequest happy) $ runRequest . exceptional
 
 {- |
 Lifts a @"Maybe" a@ into a @'Request' a@. -}
