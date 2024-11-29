@@ -1,5 +1,9 @@
 # HCL Change Log
 
+## v.1.9
+* Updated to a more recent Haskell Stack snapshot
+* Implemented `MonadThrow` and `MonadCatch` on `Request`
+
 ## v.1.8
 
 * updated to haskell stack
